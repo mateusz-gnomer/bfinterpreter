@@ -23,7 +23,7 @@ public class TestStanuMaszyny {
         assertTrue(stanMaszyny.wartoscTasmy()==0);
         assertTrue(stanMaszyny.pozycjaTasmy()==0);
         
-        assertTrue(stanMaszyny.dlugoscTasmy()==3000);
+        assertTrue(stanMaszyny.dlugoscTasmy()==30000);
         
         
         assertTrue(stanMaszyny.aktualneWejscie()==0);
@@ -51,8 +51,8 @@ public class TestStanuMaszyny {
         stanMaszyny.ustawPozycjeWejscia(3);
         
         assertTrue(stanMaszyny.aktualneWejscie()=='d');
-        assertTrue(stanMaszyny.pozycjaWejscia()=='3');
-        assertTrue("abcdefgh".equals(stanMaszyny.zwrocWyjscie()));
+        assertTrue(stanMaszyny.pozycjaWejscia()==3);
+        assertTrue("abcdefgh".equals(stanMaszyny.zwrocWejscie()));
     }
     
     @Test
