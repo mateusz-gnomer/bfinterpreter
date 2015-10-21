@@ -74,5 +74,25 @@ public class TestStanuMaszyny {
         assertTrue(stanMaszyny.zwrocPozycjeKodu()==3); 
         assertTrue(stanMaszyny.aktualnaKomenda()==0);
     }
+    
+    @Test
+    public void testResetowania(){
+        this.stanMaszyny.ustawKod(">++");
+        this.stanMaszyny.ustawWyjscie("wyjscie");
+        this.stanMaszyny.ustawWejscie("wejscie");
+        this.stanMaszyny.ustawPozycjeKodu(1);
+        
+        assertTrue(this.stanMaszyny.aktualnaKomenda()=='+');
+        assertTrue("wyjscie".equals(this.stanMaszyny.zwrocWyjscie()));
+        assertTrue("wejscie".equals(this.stanMaszyny.zwrocWejscie()));
+        assertTrue(this.stanMaszyny.zwrocPozycjeKodu()==1);
+        
+        this.stanMaszyny.resetuj();
+        
+        assertTrue(this.stanMaszyny.aktualnaKomenda()==0);
+        assertTrue("".equals(this.stanMaszyny.zwrocWyjscie()));
+        assertTrue("".equals(this.stanMaszyny.zwrocWejscie()));
+        assertTrue(this.stanMaszyny.zwrocPozycjeKodu()==0);
+    }
 
 }

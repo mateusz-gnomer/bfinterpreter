@@ -20,6 +20,10 @@ public class ProstyStanMaszyny implements StanMaszyny {
     private int pozycjaKodu;
     
     public ProstyStanMaszyny(){
+        this.resetuj();
+    }
+    
+    public void resetuj(){
         this.pozycjaTasmy = 0;
         this.pozycjaWejscia = 0;
         this.pozycjaKodu = 0;
@@ -31,7 +35,7 @@ public class ProstyStanMaszyny implements StanMaszyny {
         this.wejscie = new String("");
         this.wyjscie = new String("");
         this.kod = new String("");
-    }
+    };
     
     public int wartoscTasmy(){
         return this.tasma[pozycjaTasmy];

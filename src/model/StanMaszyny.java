@@ -22,4 +22,5 @@ public interface StanMaszyny {
     public int zwrocPozycjeKodu();
     public char aktualnaKomenda();
     
+    public void resetuj();
 }
