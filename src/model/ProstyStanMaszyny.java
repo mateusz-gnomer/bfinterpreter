@@ -9,7 +9,7 @@ package model;
  */
 public class ProstyStanMaszyny implements StanMaszyny {
     private int dlugoscTasmy = 30000;
-    private int tasma[] = new int[dlugoscTasmy];
+    private int tasma[];
     private int pozycjaTasmy;
     
     private String wejscie;
@@ -27,6 +27,7 @@ public class ProstyStanMaszyny implements StanMaszyny {
         this.pozycjaTasmy = 0;
         this.pozycjaWejscia = 0;
         this.pozycjaKodu = 0;
+        this.tasma = new int[dlugoscTasmy];
         
         for(int i = 0; i < dlugoscTasmy; i++){
             tasma[i] = 0;
@@ -89,7 +90,7 @@ public class ProstyStanMaszyny implements StanMaszyny {
     public void ustawPozycjeKodu(int pozycjaKodu){
         this.pozycjaKodu = pozycjaKodu;
     };
-    public int zwrocPozycjeKodu(){
+    public int pozycjaKodu(){
         return this.pozycjaKodu;
     }
     public char aktualnaKomenda(){

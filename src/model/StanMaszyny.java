@@ -19,7 +19,7 @@ public interface StanMaszyny {
     
     public void ustawKod(String kod);
     public void ustawPozycjeKodu(int pozycjaKodu);
-    public int zwrocPozycjeKodu();
+    public int pozycjaKodu();
     public char aktualnaKomenda();
     
     public void resetuj();

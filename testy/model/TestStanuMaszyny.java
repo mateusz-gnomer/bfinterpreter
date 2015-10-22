@@ -32,7 +32,7 @@ public class TestStanuMaszyny {
         
         assertTrue(stanMaszyny.zwrocWyjscie().length()==0);
         
-        assertTrue(stanMaszyny.zwrocPozycjeKodu() == 0);
+        assertTrue(stanMaszyny.pozycjaKodu() == 0);
         assertTrue(stanMaszyny.aktualnaKomenda() == 0);
     }
     
@@ -65,13 +65,13 @@ public class TestStanuMaszyny {
     public void testPoprawnegoKodu(){
         stanMaszyny.ustawKod("><>");
         stanMaszyny.ustawPozycjeKodu(1);
-        assertTrue(stanMaszyny.zwrocPozycjeKodu()==1);
+        assertTrue(stanMaszyny.pozycjaKodu()==1);
         assertTrue(stanMaszyny.aktualnaKomenda()=='<');
         
         stanMaszyny.ustawPozycjeKodu(3);
         
         // TODO //if pozycja kodu >=dlkodu return 0
-        assertTrue(stanMaszyny.zwrocPozycjeKodu()==3); 
+        assertTrue(stanMaszyny.pozycjaKodu()==3); 
         assertTrue(stanMaszyny.aktualnaKomenda()==0);
     }
     
@@ -85,14 +85,14 @@ public class TestStanuMaszyny {
         assertTrue(this.stanMaszyny.aktualnaKomenda()=='+');
         assertTrue("wyjscie".equals(this.stanMaszyny.zwrocWyjscie()));
         assertTrue("wejscie".equals(this.stanMaszyny.zwrocWejscie()));
-        assertTrue(this.stanMaszyny.zwrocPozycjeKodu()==1);
+        assertTrue(this.stanMaszyny.pozycjaKodu()==1);
         
         this.stanMaszyny.resetuj();
         
         assertTrue(this.stanMaszyny.aktualnaKomenda()==0);
         assertTrue("".equals(this.stanMaszyny.zwrocWyjscie()));
         assertTrue("".equals(this.stanMaszyny.zwrocWejscie()));
-        assertTrue(this.stanMaszyny.zwrocPozycjeKodu()==0);
+        assertTrue(this.stanMaszyny.pozycjaKodu()==0);
     }
 
 }
