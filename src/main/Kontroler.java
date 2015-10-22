@@ -31,7 +31,7 @@ public class Kontroler implements ActionListener{
         }
         
         stanMaszyny = new ProstyStanMaszyny();
-        interpreter = new ProstyInterpreter();
+        interpreter = new ProstyInterpreter(stanMaszyny);
 
     }
     @Override
