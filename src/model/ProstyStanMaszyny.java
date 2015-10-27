@@ -100,4 +100,6 @@ public class ProstyStanMaszyny implements StanMaszyny {
         return this.kod.charAt(this.pozycjaKodu);
     };
     
+    // TODO boolean maKod, maWejscie
+    
 }
