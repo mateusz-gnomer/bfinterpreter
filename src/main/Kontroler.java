@@ -38,7 +38,7 @@ public class Kontroler implements ActionListener{
     }
     
     public void uruchom(){
-        this.ui.przypiszStanMaszyny(stanMaszyny);
+        this.stanMaszyny.resetuj();
         this.ui.wyswietlInterfejs();
     }
     
@@ -63,15 +63,22 @@ public class Kontroler implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("uruchom")){
+            this.stanMaszyny.resetuj();
+            this.stanMaszyny.ustawKod(this.ui.zwrocKod());
+            this.stanMaszyny.ustawWejscie(this.ui.zwrocWejscie());
+        }
         if(e.getActionCommand().equals("step")){
             this.interpreter.krok();
-            System.out.println("krok w sluchaczu");
+            this.ui.ustawWyjscie(this.stanMaszyny.zwrocWyjscie());
         }
         if(e.getActionCommand().equals("toBreakpoint")){
             this.interpreter.uruchomDoPunktu();
+            this.ui.ustawWyjscie(this.stanMaszyny.zwrocWyjscie());
         }
         if(e.getActionCommand().equals("runAll")){
             this.interpreter.uruchomDoKonca();
+            this.ui.ustawWyjscie(this.stanMaszyny.zwrocWyjscie());
         }
         // TODO akcja krok do przodu
         // TODO akcja edycja kodu

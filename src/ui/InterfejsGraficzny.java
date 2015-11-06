@@ -21,7 +21,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
-import model.StanMaszyny;
+
 /**
  * @author gn
  *
@@ -33,7 +33,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     private static final long serialVersionUID = 1L;
  
     
-    private StanMaszyny stanMaszyny;
+ //   private StanMaszyny stanMaszyny;
     private boolean test;
     private ActionListener sluchacz;
     private ActionListener aktywator;
@@ -83,7 +83,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         wszystko.addActionListener(sluchacz);
         wszystko.addActionListener(aktywator);
         uruchomZakoncz = new JButton("Run debugger");
-        uruchomZakoncz.setActionCommand("uruchomZakoncz");
+        uruchomZakoncz.setActionCommand("uruchom");
         uruchomZakoncz.addActionListener(aktywator);
         uruchomZakoncz.addActionListener(sluchacz);
     
@@ -180,52 +180,23 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         this.setVisible(true);
     }
 
-    @Override
-    public void uaktualnijStanMaszyny() {
-        
-        // TODO Auto-generated method stub
-       if(this.test == false){
-           this.stanMaszyny.resetuj();
-           this.stanMaszyny.ustawKod(this.kod.getText());
-           this.stanMaszyny.ustawWejscie(this.wejscie.getText());
-       }
-       wyswietlStanMaszyny();
-    }
-    
 
-    @Override
-    public void wyswietlStanMaszyny() {
-        // TODO Auto-generated method stub
-        // pozycja kodu
-        // pozycja wejscia
-        // wyjscie
-        if(this.test == false){
-            this.wyjscie.setText(this.stanMaszyny.zwrocWyjscie());
-        }
-
-        // tabelka
-    }
-    
-    @Override
-    public void przypiszStanMaszyny(StanMaszyny stan) {
-        // TODO Auto-generated method stub
-        this.test = false;
-        this.stanMaszyny = stan;
-    }
     
     class Aktywator implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            wyswietlStanMaszyny();
             
-            if(e.getActionCommand().equals("uruchomZakoncz")){
+            if(e.getActionCommand().equals("uruchom")
+                ||e.getActionCommand().equals("zakoncz")){
                 if(aktywne==true){
                     aktywne = false;
                     uruchomZakoncz.setText("Run debugger");
+                    uruchomZakoncz.setActionCommand("uruchom");
                     
                 }else {
                     aktywne = true;
+                    wyjscie.setText("");
                     uruchomZakoncz.setText("Stop debugger");
-                    uaktualnijStanMaszyny();
+                    uruchomZakoncz.setActionCommand("zakoncz");
                 }
                 krok.setEnabled(aktywne);
                 doPunktu.setEnabled(aktywne);
@@ -255,6 +226,21 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     public static void main(String [] args){
         InterfejsGraficzny okno = new InterfejsGraficzny(null);
         okno.wyswietlInterfejs();
+    }
+
+    @Override
+    public String zwrocKod() {
+        return this.kod.getText();
+    }
+
+    @Override
+    public String zwrocWejscie() {
+        return this.wejscie.getText();
+    }
+
+    @Override
+    public void ustawWyjscie(String wyjscie) {
+        this.wyjscie.setText(wyjscie);
     }
 
  

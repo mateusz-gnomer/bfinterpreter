@@ -18,21 +18,23 @@ public class InterfejsTekstowy implements InterfejsUzytkownika {
     }
 
     @Override
-    public void uaktualnijStanMaszyny() {
+    public String zwrocKod() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String zwrocWejscie() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void ustawWyjscie(String wyjscie) {
         // TODO Auto-generated method stub
         
     }
 
-    @Override
-    public void przypiszStanMaszyny(StanMaszyny stan) {
-        // TODO Auto-generated method stub
-        
-    }
 
-    @Override
-    public void wyswietlStanMaszyny() {
-        // TODO Auto-generated method stub
-        
-    }
 
 }

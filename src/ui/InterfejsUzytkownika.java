@@ -2,7 +2,6 @@
  * 
  */
 package ui;
-import model.StanMaszyny;
 
 /**
  * @author gn
@@ -10,7 +9,7 @@ import model.StanMaszyny;
  */
 public interface InterfejsUzytkownika {
     public void wyswietlInterfejs();
-    public void uaktualnijStanMaszyny();
-    public void wyswietlStanMaszyny();
-    public void przypiszStanMaszyny(StanMaszyny stan);
+    public String zwrocKod();
+    public String zwrocWejscie();
+    public void ustawWyjscie(String wyjscie);
 }
