@@ -67,6 +67,12 @@ public class Kontroler implements ActionListener{
             this.interpreter.krok();
             System.out.println("krok w sluchaczu");
         }
+        if(e.getActionCommand().equals("toBreakpoint")){
+            this.interpreter.uruchomDoPunktu();
+        }
+        if(e.getActionCommand().equals("runAll")){
+            this.interpreter.uruchomDoKonca();
+        }
         // TODO akcja krok do przodu
         // TODO akcja edycja kodu
         // TODO akcja edycja wejścia
