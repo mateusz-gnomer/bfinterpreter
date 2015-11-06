@@ -31,6 +31,18 @@ public class TestInterpretera {
         assertTrue(this.stanMaszyny.pozycjaTasmy()==1);
         assertTrue(this.stanMaszyny.aktualnaKomenda()==0);
     }
+    
+    @Test
+    public void testIgnorowanieNiekomend() {
+        this.stanMaszyny.ustawKod("aaa>");
+        this.interpreter.krok();
+        this.interpreter.krok();
+        this.interpreter.krok();
+        this.interpreter.krok();
+        assertTrue(this.stanMaszyny.pozycjaKodu()==4);
+        assertTrue(this.stanMaszyny.pozycjaTasmy()==1);
+        assertTrue(this.stanMaszyny.aktualnaKomenda()==0);
+    }
     @Test
     public void testKrokKomenda2() {
         this.stanMaszyny.ustawKod("<");
@@ -210,6 +222,58 @@ public class TestInterpretera {
         assertTrue(this.stanMaszyny.wartoscTasmy() ==  0);
         assertTrue(this.stanMaszyny.pozycjaTasmy() ==  3);
         assertTrue(this.stanMaszyny.pozycjaKodu() == 0);
+    }
+    
+    
+    @Test 
+    public void testUruchomDoKonca(){
+        this.stanMaszyny.ustawKod("[[-]>]");
+        
+        this.stanMaszyny.ustawWartoscTasmy(1);
+        
+        this.stanMaszyny.ustawPozycjeTasmy(1);
+        this.stanMaszyny.ustawWartoscTasmy(1);
+        
+        this.stanMaszyny.ustawPozycjeTasmy(2);
+        this.stanMaszyny.ustawWartoscTasmy(1);
+
+        this.stanMaszyny.ustawPozycjeTasmy(0);
+        //          taśma      kod
+        //pozycja   0 1 2 3    0 1 2 3 4 5
+        //wartosc   1 1 1 0    [ [ - ] > ]
+        //wskaznik  ^          ^
+        
+        this.interpreter.uruchomDoKonca();
+      
+        assertTrue(this.stanMaszyny.wartoscTasmy() ==  0);
+        assertTrue(this.stanMaszyny.pozycjaTasmy() ==  3);
+        assertTrue(this.stanMaszyny.pozycjaKodu() == 6);
+    }
+    
+    @Test 
+    public void testUruchomDoPunktu(){
+        this.stanMaszyny.ustawKod("#+++#+++#+++");
+        
+        //pozycja   0 1 2 3    0 1 2 3 4 5
+        //wartosc   1 1 1 0    [ [ - ] > ]
+        //wskaznik  ^          ^
+        
+        this.interpreter.uruchomDoPunktu();
+      
+
+        assertTrue(this.stanMaszyny.wartoscTasmy() ==  3);
+        assertTrue(this.stanMaszyny.pozycjaKodu() == 4);
+        
+        this.interpreter.uruchomDoPunktu();
+        
+
+        assertTrue(this.stanMaszyny.wartoscTasmy() ==  6);
+        assertTrue(this.stanMaszyny.pozycjaKodu() == 8);
+        
+        this.interpreter.uruchomDoPunktu();
+        
+        assertTrue(this.stanMaszyny.wartoscTasmy() ==  9);
+        assertTrue(this.stanMaszyny.pozycjaKodu() == 12);
     }
     
 

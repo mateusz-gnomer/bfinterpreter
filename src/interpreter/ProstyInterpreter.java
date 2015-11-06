@@ -103,6 +103,7 @@ public class ProstyInterpreter implements Interpreter{
             wrocDoOtwierajacego();
             break;
         default:
+            this.stanMaszyny.ustawPozycjeKodu(this.stanMaszyny.pozycjaKodu()+1);
             break;
         }
         
@@ -143,10 +144,18 @@ public class ProstyInterpreter implements Interpreter{
     }
     
     public void uruchomDoPunktu(){
-        
+        if(this.stanMaszyny.aktualnaKomenda()!=0){
+            this.krok();
+        }
+        while(this.stanMaszyny.aktualnaKomenda()!=0
+                && this.stanMaszyny.aktualnaKomenda()!='#'){
+            this.krok();
+        }
     }
     public void uruchomDoKonca(){
-        
+        while(this.stanMaszyny.aktualnaKomenda()!=0){
+            this.krok();
+        }
     }
     
     public int wartoscZawinieta(){
