@@ -6,6 +6,7 @@ public interface StanMaszyny {
     public int pozycjaTasmy();
     public void ustawPozycjeTasmy(int pozycjaTasmy);
     public void ustawWartoscTasmy(int wartosc);
+    public int[] zwrocTasme();
     
     public int dlugoscTasmy();
     
