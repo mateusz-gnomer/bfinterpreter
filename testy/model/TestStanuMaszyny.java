@@ -94,13 +94,5 @@ public class TestStanuMaszyny {
         assertTrue("".equals(this.stanMaszyny.zwrocWejscie()));
         assertTrue(this.stanMaszyny.pozycjaKodu()==0);
     }
-    @Test
-    public void testZwracaniaTasmy(){
-        this.stanMaszyny.ustawWartoscTasmy(5);
-        int [] tab = stanMaszyny.zwrocTasme();
-        assertTrue(tab[0]==5);
-        tab[0]=11;
-        assertTrue(stanMaszyny.wartoscTasmy()==11);
-    }
 
 }
