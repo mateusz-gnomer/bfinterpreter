@@ -55,6 +55,10 @@ public class ProstyStanMaszyny implements StanMaszyny {
         return this.dlugoscTasmy;
     };
     
+    public int[] zwrocTasme(){
+        return this.tasma;
+    }
+    
     public char aktualneWejscie(){
         if(this.wejscie.length()<=this.pozycjaWejscia ||
                 this.pozycjaWejscia<0){
