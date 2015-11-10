@@ -35,6 +35,12 @@ public class InterfejsTekstowy implements InterfejsUzytkownika {
         
     }
 
+    @Override
+    public void ustawTasme(int[] tasma) {
+        // TODO Auto-generated method stub
+        
+    }
+
 
 
 }

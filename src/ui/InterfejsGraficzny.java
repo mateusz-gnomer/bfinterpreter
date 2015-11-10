@@ -33,15 +33,23 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     private static final long serialVersionUID = 1L;
  
     
- //   private StanMaszyny stanMaszyny;
-    private boolean test;
+ //   private StanMaszyny stanMaszyny
     private ActionListener sluchacz;
+    private int [] tasma;
+    private int pozLewaTasmy;
+    private int iloscKolumnTabeli;
     private ActionListener aktywator;
+    private ActionListener przewijacz;
     private boolean aktywne;
     private JButton krok;
     private JButton doPunktu;
     private JButton wszystko;
     private JButton uruchomZakoncz;
+    
+    private JButton jedenLewo;
+    private JButton jedenPrawo;
+    private JButton dziesiecLewo;
+    private JButton dziesiecPrawo;
 
     private JTextArea kod;
     private JScrollPane przewijanieKodu;
@@ -56,9 +64,13 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     
     private JTable tabela;
     public InterfejsGraficzny(ActionListener sluchacz){
-        this.test = true;
+        this.pozLewaTasmy = 0;
+        this.iloscKolumnTabeli = 10;
+
         this.sluchacz = sluchacz;
         this.aktywator = new Aktywator();
+        this.przewijacz = new Przewijacz();
+        this.tasma = new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
         // ustawienie porzadkowania komponetow
         GridBagLayout uklad = new GridBagLayout();
         this.setLayout(uklad);
@@ -66,6 +78,30 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             // komponenty nieistotne
         JPanel panelWeWy = new JPanel();
         JPanel panelPrzyciskow = new JPanel();
+        
+        jedenLewo = new JButton("<");
+        jedenLewo.setActionCommand("oneLeft");
+        jedenLewo.addActionListener(przewijacz);
+        
+        jedenPrawo = new JButton(">");
+        jedenPrawo.setActionCommand("oneRight");
+        jedenPrawo.addActionListener(przewijacz);
+        
+        dziesiecLewo = new JButton("<<");
+        dziesiecLewo.setActionCommand("tenLeft");
+        dziesiecLewo.addActionListener(przewijacz);
+        
+        dziesiecPrawo = new JButton(">>");
+        dziesiecPrawo.setActionCommand("tenRight");
+        dziesiecPrawo.addActionListener(przewijacz);
+        
+        JPanel panelPrzewijania = new JPanel();
+        panelPrzewijania.add(dziesiecLewo);
+        panelPrzewijania.add(jedenLewo);
+        panelPrzewijania.add(jedenPrawo);
+        panelPrzewijania.add(dziesiecPrawo);
+
+        
         aktywne = false;
         krok = new JButton("Single step");
         krok.setActionCommand("step");
@@ -115,8 +151,8 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
      
         // Wkładanie wszystkiego do ramki przy użyciu grid bag constraints
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.weightx = 1;
+        wytyczne.weighty = 1;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = 1;
@@ -153,8 +189,17 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         przewijanieTabelki.setPreferredSize(
              new Dimension(d.width,tabela.getRowHeight()*4/*rows+1*/));
         this.add(przewijanieTabelki, wytyczne);
+        
+        
+        wytyczne.weightx = 100;
+        wytyczne.weighty = 100;
+        wytyczne.gridx = GridBagConstraints.RELATIVE;
+        wytyczne.gridy = GridBagConstraints.RELATIVE;
+        wytyczne.gridwidth = GridBagConstraints.REMAINDER;
+        wytyczne.gridheight = 1;
+        this.add(panelPrzewijania, wytyczne);
     
-            wytyczne.weightx = 100;
+        wytyczne.weightx = 100;
         wytyczne.weighty = 100;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
@@ -204,6 +249,37 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
                 kod.setEnabled(!aktywne);
                 wejscie.setEnabled(!aktywne);
             }
+
+        }
+    }
+    
+    class Przewijacz implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            if(e.getActionCommand().equals("oneLeft")){
+                pozLewaTasmy--;
+                if(pozLewaTasmy<0){
+                    pozLewaTasmy = pozLewaTasmy+tasma.length;
+                }
+            }
+            if(e.getActionCommand().equals("tenLeft")){
+                pozLewaTasmy = pozLewaTasmy-10;
+                if(pozLewaTasmy<0){
+                    pozLewaTasmy = pozLewaTasmy+tasma.length;
+                }
+            }
+            if(e.getActionCommand().equals("oneRight")){
+                pozLewaTasmy++;
+                if(pozLewaTasmy >= tasma.length){
+                    pozLewaTasmy = pozLewaTasmy-tasma.length;
+                }
+            }
+            if(e.getActionCommand().equals("tenRight")){
+                pozLewaTasmy = pozLewaTasmy + 10;
+                if(pozLewaTasmy >= tasma.length){
+                    pozLewaTasmy = pozLewaTasmy-tasma.length;
+                }
+            }
+            aktualizujModelTabeli();
         }
     }
 
@@ -241,6 +317,39 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     @Override
     public void ustawWyjscie(String wyjscie) {
         this.wyjscie.setText(wyjscie);
+    }
+
+    @Override
+    public void ustawTasme(int[] t) {
+        this.tasma = t;
+        // TODO zrob model z tej tasmy i przypisz tabeli
+       this.aktualizujModelTabeli();
+    }
+    
+    private void aktualizujModelTabeli(){
+        tabela.setModel(new AbstractTableModel(){
+            int dlTasmy = tasma.length;
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+            public int getColumnCount(){
+                return iloscKolumnTabeli;
+            }
+            public int getRowCount(){
+                return 2;
+            }
+            public Object getValueAt(int r, int c){
+                int indeks = pozLewaTasmy+c;
+                if(indeks >= this.dlTasmy){
+                    indeks = indeks - this.dlTasmy;
+                }
+                if(r==0){
+                   return indeks;
+                }
+                return tasma[indeks];
+            }
+        });
     }
 
  

@@ -39,6 +39,7 @@ public class Kontroler implements ActionListener{
     
     public void uruchom(){
         this.stanMaszyny.resetuj();
+        this.ui.ustawTasme(this.stanMaszyny.zwrocTasme());
         this.ui.wyswietlInterfejs();
     }
     
@@ -63,6 +64,7 @@ public class Kontroler implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if(e.getActionCommand().equals("uruchom")){
             this.stanMaszyny.resetuj();
             this.stanMaszyny.ustawKod(this.ui.zwrocKod());
@@ -80,6 +82,7 @@ public class Kontroler implements ActionListener{
             this.interpreter.uruchomDoKonca();
             this.ui.ustawWyjscie(this.stanMaszyny.zwrocWyjscie());
         }
+        this.ui.ustawTasme(this.stanMaszyny.zwrocTasme());
         // TODO akcja krok do przodu
         // TODO akcja edycja kodu
         // TODO akcja edycja wejścia

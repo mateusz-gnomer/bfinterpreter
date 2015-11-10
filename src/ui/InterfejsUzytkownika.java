@@ -12,4 +12,5 @@ public interface InterfejsUzytkownika {
     public String zwrocKod();
     public String zwrocWejscie();
     public void ustawWyjscie(String wyjscie);
+    public void ustawTasme(int [] tasma);
 }
