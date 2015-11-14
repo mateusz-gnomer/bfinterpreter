@@ -151,6 +151,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
      
         // Wkładanie wszystkiego do ramki przy użyciu grid bag constraints
+        wytyczne.fill = GridBagConstraints.BOTH;
         wytyczne.weightx = 1;
         wytyczne.weighty = 1;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
@@ -160,24 +161,25 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         
         this.add(this.przewijanieKodu, wytyczne);     
     
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.weightx = 0.5;
+        wytyczne.weighty = 0.5;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
         wytyczne.gridheight = 1;
         this.add(przewijanieWejscia, wytyczne);
     
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.weightx = 0.5;
+        wytyczne.weighty = 0.5;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
         wytyczne.gridheight = 1;
         this.add(przewijanieWyjscia, wytyczne);
     
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.fill = GridBagConstraints.NONE;
+        wytyczne.weightx = 0;
+        wytyczne.weighty = 0;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
@@ -191,16 +193,16 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         this.add(przewijanieTabelki, wytyczne);
         
         
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.weightx = 0;
+        wytyczne.weighty = 0;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
         wytyczne.gridheight = 1;
         this.add(panelPrzewijania, wytyczne);
     
-        wytyczne.weightx = 100;
-        wytyczne.weighty = 100;
+        wytyczne.weightx = 0;
+        wytyczne.weighty = 0;
         wytyczne.gridx = GridBagConstraints.RELATIVE;
         wytyczne.gridy = GridBagConstraints.RELATIVE;
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
