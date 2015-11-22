@@ -9,9 +9,14 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -38,6 +43,8 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     private int [] tasma;
     private int pozLewaTasmy;
     private int iloscKolumnTabeli;
+    private int pozKodu;
+    private String tempKod; //używane przy zamienianiu typu zawartości kodu
     private ActionListener aktywator;
     private ActionListener przewijacz;
     private boolean aktywne;
@@ -51,8 +58,8 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     private JButton dziesiecLewo;
     private JButton dziesiecPrawo;
 
-    private JTextArea kod;
-    private JScrollPane przewijanieKodu;
+    private JEditorPane kodHtml;
+    private JScrollPane przewijanieKoduHtml;
 
     private JTextArea wejscie;
     private JScrollPane przewijanieWejscia;
@@ -134,11 +141,47 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
         //==== putting components ======
-        this.kod = new JTextArea(8,40);
+        
+        this.kodHtml = new JEditorPane();
+        this.kodHtml.setContentType("text/plain");
+       
+        this.kodHtml.getDocument().addDocumentListener(new DocumentListener(){
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                // TODO Auto-generated method stub
+                if(kodHtml.isEditable()){
+                    tempKod = kodHtml.getText();
+                    System.out.println("insert"+tempKod);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                // TODO Auto-generated method stub
+                if(kodHtml.isEditable()){
+                    tempKod = kodHtml.getText();
+                    System.out.println("removed"+tempKod);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // TODO Auto-generated method stub
+                if(kodHtml.isEditable()){
+                    tempKod = kodHtml.getText();
+                    System.out.println("changed"+tempKod);
+                }
+            }
+            
+        });
+        // TODO ustawienie zamiast JTextArea editor pane'a i pogrubianie aktualnej komendy
+         
+        
+
             //kod.setPreferredSize(new Dimension(100, 100));
-        this.przewijanieKodu = new JScrollPane(this.kod);
-    
-    
+        //this.przewijanieKodu = new JScrollPane(this.kod);
+        this.przewijanieKoduHtml = new JScrollPane(kodHtml);
     
         this.wejscie = new JTextArea(4,20);
         this.przewijanieWejscia = new JScrollPane(this.wejscie);
@@ -159,7 +202,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         wytyczne.gridwidth = 1;
         wytyczne.gridheight = 2;
         
-        this.add(this.przewijanieKodu, wytyczne);     
+        this.add(this.przewijanieKoduHtml, wytyczne);     
     
         wytyczne.weightx = 0.5;
         wytyczne.weighty = 0.5;
@@ -185,6 +228,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
         wytyczne.gridheight = 1;
         tabela = new JTable(new ModelDanych());
+        tabela.setTableHeader(null);
         JScrollPane przewijanieTabelki = new JScrollPane(tabela);
         //http://stackoverflow.com/questions/6523974/shrink-jscroll-pane-to-same-height-as-jtable
         Dimension d = tabela.getPreferredSize();
@@ -226,31 +270,87 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     public void wyswietlInterfejs() {
         this.setVisible(true);
     }
+    
+    private String otocz(String wejscie, int indeks, String lewo, String prawo){
+        int dl = wejscie.length();
+        String pogrubiane;
+
+        char znak;
+        if(indeks>(dl-1) || indeks<0){
+            return zamienLtGt(wejscie);
+        }
+        if(dl==0){
+            return "";
+        }
+        znak = wejscie.charAt(indeks);
+        if(znak == '<'){
+            pogrubiane = "&lt;";
+        }else if(znak == '>'){
+            pogrubiane = "&gt;";
+        }else if(znak == '\n'){
+            pogrubiane = "\\n<br />";
+        }
+        else{
+            pogrubiane = new String(""+znak+"");
+        }
+        if(dl==1){
+            return lewo + pogrubiane + prawo;
+        }
+        if(indeks==0){
+            return lewo + pogrubiane + prawo + zamienLtGt(wejscie.substring(1));
+        }
+        if(indeks==(dl-1)){
+            return zamienLtGt(wejscie.substring(0, indeks)) + lewo + 
+                    pogrubiane + prawo;
+        }
+        return zamienLtGt(wejscie.substring(0, indeks)) + lewo + 
+                pogrubiane + prawo + zamienLtGt(wejscie.substring(indeks+1));
+   
+    }
+    
+    private String zamienLtGt(String zrodlo){
+        return zrodlo.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br />");
+    }
+ 
 
 
     
     class Aktywator implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            
             if(e.getActionCommand().equals("uruchom")
                 ||e.getActionCommand().equals("zakoncz")){
                 if(aktywne==true){
                     aktywne = false;
                     uruchomZakoncz.setText("Run debugger");
                     uruchomZakoncz.setActionCommand("uruchom");
+                    //Odgrubianie aktualnej komendy:
+                    kodHtml.setEditable(!aktywne);
+                    kodHtml.setContentType("text/plain");
+                    kodHtml.setText(tempKod);
                     
                 }else {
                     aktywne = true;
                     wyjscie.setText("");
                     uruchomZakoncz.setText("Stop debugger");
                     uruchomZakoncz.setActionCommand("zakoncz");
+                    //Pogrubianie aktualnej komendy:
+                    kodHtml.setEditable(!aktywne);
+                    tempKod = kodHtml.getText();
+                    kodHtml.setContentType("text/html");
+                    pozKodu = 0;
+                    kodHtml.setText(otocz(tempKod,
+                            pozKodu, "<strong>", "</strong>"));
                 }
                 krok.setEnabled(aktywne);
                 doPunktu.setEnabled(aktywne);
                 wszystko.setEnabled(aktywne);
-                kod.setEnabled(!aktywne);
-                wejscie.setEnabled(!aktywne);
+                wejscie.setEditable(!aktywne);
+            }else if(e.getActionCommand().equals("step")){
+                pozKodu++;
+                kodHtml.setText(otocz(tempKod, 
+                        pozKodu, "<strong>", "</strong>"));
             }
+            
 
         }
     }
@@ -300,15 +400,13 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             return r+c;
         }
     }
-    
-    public static void main(String [] args){
-        InterfejsGraficzny okno = new InterfejsGraficzny(null);
-        okno.wyswietlInterfejs();
-    }
+
 
     @Override
     public String zwrocKod() {
-        return this.kod.getText();
+        //Żeby przypadkiem nie zwróciło kodu ze znakami html
+        return this.tempKod;
+        //return this.kod.getText();
     }
 
     @Override
@@ -353,7 +451,36 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             }
         });
     }
+    
+    
+    public static void main(String [] args){
+        InterfejsGraficzny okno = new InterfejsGraficzny(null);
+        
+        //Testy funkcji otocz
+        if(!("<>a</>").equals(okno.otocz("a",0,"<>","</>")))
+                 System.out.println("Bład funkcji otocz dla <>a</>");
+        
+        if(!("").equals(okno.otocz("",0,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla pustego");
+        
+        if(!("asdf").equals(okno.otocz("asdf",17,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla asdf indeks 17");
+        
+        if(!("a<>s</>df").equals(okno.otocz("asdf",1,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla a<>s</>df");
+        
+        if(!("<>a</>sdf").equals(okno.otocz("asdf",0,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla <>a</>sdf");
+        
+        if(!("asd<>f</>").equals(okno.otocz("asdf",3,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla asd<>f</>");
+        if(!("<>&lt;</>&gt;&lt;&gt;").equals(okno.otocz("<><>",0,"<>","</>")))
+            System.out.println("Bład funkcji otocz dla <>&lt;</>><>");
+        
+        okno.wyswietlInterfejs();
+    }
 
+    //public JEditorPane("text/html", tekst kodu + znaczniki html <strong>wokół aktualnej komendy</strong>);
  
     
     
