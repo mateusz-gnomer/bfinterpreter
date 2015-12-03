@@ -5,16 +5,19 @@ package ui;
 
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 
@@ -25,6 +28,10 @@ import java.awt.event.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
+
+import java.awt.Color;
+
+import javax.swing.text.html.HTMLDocument;
 
 
 /**
@@ -143,8 +150,9 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         //==== putting components ======
         
         this.kodHtml = new JEditorPane();
+
         this.kodHtml.setContentType("text/plain");
-       
+
         this.kodHtml.getDocument().addDocumentListener(new DocumentListener(){
 
             @Override
@@ -181,15 +189,27 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
 
             //kod.setPreferredSize(new Dimension(100, 100));
         //this.przewijanieKodu = new JScrollPane(this.kod);
-        this.przewijanieKoduHtml = new JScrollPane(kodHtml);
-    
+        this.kodHtml.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.przewijanieKoduHtml = new JScrollPane(this.kodHtml);
+        this.przewijanieKoduHtml.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.przewijanieKoduHtml.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black),"Brainfuck code"));
+       
         this.wejscie = new JTextArea(4,20);
+        this.wejscie.setBorder(BorderFactory.createLoweredBevelBorder());
         this.przewijanieWejscia = new JScrollPane(this.wejscie);
-        
+        this.przewijanieWejscia.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.przewijanieWejscia.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black),"Input"));
     
         this.wyjscie = new JTextArea(4,20);
+        this.wyjscie.setBorder(BorderFactory.createLoweredBevelBorder());
         this.wyjscie.setEnabled(false);
         this.przewijanieWyjscia = new JScrollPane(this.wyjscie);
+        this.przewijanieWyjscia.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.przewijanieWyjscia.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black),"Output"));
+        
             panelWeWy.add(this.przewijanieWejscia, BorderLayout.NORTH);
             panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
      
@@ -228,12 +248,16 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         wytyczne.gridwidth = GridBagConstraints.REMAINDER;
         wytyczne.gridheight = 1;
         tabela = new JTable(new ModelDanych());
+       
         tabela.setTableHeader(null);
         JScrollPane przewijanieTabelki = new JScrollPane(tabela);
         //http://stackoverflow.com/questions/6523974/shrink-jscroll-pane-to-same-height-as-jtable
         Dimension d = tabela.getPreferredSize();
         przewijanieTabelki.setPreferredSize(
              new Dimension(d.width,tabela.getRowHeight()*4/*rows+1*/));
+        
+        przewijanieTabelki.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black),"Memory status"));
         this.add(przewijanieTabelki, wytyczne);
         
         
@@ -336,7 +360,13 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
                     //Pogrubianie aktualnej komendy:
                     kodHtml.setEditable(!aktywne);
                     tempKod = kodHtml.getText();
+                    Font f;
+                    f = kodHtml.getFont();
                     kodHtml.setContentType("text/html");
+                    String bodyRule = "body { font-family: " + f.getFamily() + "; " +
+                            "font-size: " + f.getSize() + "pt;"
+                                    + " }strong {color: white; background-color:black;}";
+                    ((HTMLDocument)kodHtml.getDocument()).getStyleSheet().addRule(bodyRule);
                     pozKodu = 0;
                     kodHtml.setText(otocz(tempKod,
                             pozKodu, "<strong>", "</strong>"));
@@ -347,6 +377,10 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
                 wejscie.setEditable(!aktywne);
             }else if(e.getActionCommand().equals("step")){
                 pozKodu++;
+                kodHtml.setText(otocz(tempKod, 
+                        pozKodu, "<strong>", "</strong>"));
+            }else if(e.getActionCommand().equals("toBreakpoint")){
+                while(pozKodu<tempKod.length() && tempKod.charAt(pozKodu++)!='#');
                 kodHtml.setText(otocz(tempKod, 
                         pozKodu, "<strong>", "</strong>"));
             }
