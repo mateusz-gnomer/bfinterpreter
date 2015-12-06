@@ -213,6 +213,8 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             panelWeWy.add(this.przewijanieWejscia, BorderLayout.NORTH);
             panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
      
+            
+        
         // Wkładanie wszystkiego do ramki przy użyciu grid bag constraints
         wytyczne.fill = GridBagConstraints.BOTH;
         wytyczne.weightx = 1;
@@ -283,6 +285,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             Toolkit.getDefaultToolkit().getScreenSize()
                              );
         Dimension prefferedSize = new Dimension(this.getSize());
+        this.setMinimumSize(prefferedSize);
         int wdwLeft = screenSize.width / 2 - prefferedSize.width /2;
         int wdwTop = screenSize.height /2 - prefferedSize.height /2;
 
