@@ -192,7 +192,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         this.kodHtml.setBorder(BorderFactory.createLoweredBevelBorder());
         this.przewijanieKoduHtml = new JScrollPane(this.kodHtml);
         this.przewijanieKoduHtml.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.przewijanieKoduHtml.setBorder(BorderFactory.createTitledBorder(
+        this.przewijanieKoduHtml.setViewportBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.black),"Brainfuck code"));
        
         this.wejscie = new JTextArea(4,20);
