@@ -1,0 +1,17 @@
+<project name="BrainfuckDebugger" basedir="." default="compile">
+<target name="compile" description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <delete includeEmptyDirs="true">
+   		<fileset dir="classes/"/>
+    </delete>
+    <javac srcdir="../src" destdir="classes"/>
+    <jar destfile="bfdebug.jar" basedir="classes">
+    <manifest>
+      <attribute name="Main-Class" value="main.Kontroler"/>
+    </manifest>
+    </jar>
+  </target>
+
+
+
+</project>
