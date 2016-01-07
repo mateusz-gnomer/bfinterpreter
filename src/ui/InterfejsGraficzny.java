@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 
 import java.awt.GridBagLayout;
@@ -30,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.text.html.HTMLDocument;
 
@@ -143,7 +145,7 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         panelPrzyciskow.add(uruchomZakoncz);
             //==== INITIAL SETTINGS ======
             
-            this.setSize(500, 400);
+        this.setSize(500, 400);
         this.setTitle("Brainfuck debugger");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -184,36 +186,22 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
             
         });
         // TODO ustawienie zamiast JTextArea editor pane'a i pogrubianie aktualnej komendy
-         
-        
 
-            //kod.setPreferredSize(new Dimension(100, 100));
-        //this.przewijanieKodu = new JScrollPane(this.kod);
         this.kodHtml.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.przewijanieKoduHtml = new JScrollPane(this.kodHtml);
-        this.przewijanieKoduHtml.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.przewijanieKoduHtml.setViewportBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.black),"Brainfuck code"));
+        this.przewijanieKoduHtml = zwrocOtoczonePrzewijaniem(this.kodHtml);
+
        
-        this.wejscie = new JTextArea(4,20);
+        this.wejscie = new JTextArea();
         this.wejscie.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.przewijanieWejscia = new JScrollPane(this.wejscie);
-        this.przewijanieWejscia.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.przewijanieWejscia.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.black),"Input"));
+        this.przewijanieWejscia = zwrocOtoczonePrzewijaniem(this.wejscie);
     
-        this.wyjscie = new JTextArea(4,20);
-        this.wyjscie.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.wyjscie = new JTextArea();
         this.wyjscie.setEnabled(false);
-        this.przewijanieWyjscia = new JScrollPane(this.wyjscie);
-        this.przewijanieWyjscia.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.przewijanieWyjscia.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.black),"Output"));
+        this.przewijanieWyjscia = zwrocOtoczonePrzewijaniem(this.wyjscie);
+
         
-            panelWeWy.add(this.przewijanieWejscia, BorderLayout.NORTH);
-            panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
-     
-            
+        panelWeWy.add(this.przewijanieWejscia, BorderLayout.NORTH);
+        panelWeWy.add(this.przewijanieWyjscia, BorderLayout.SOUTH);
         
         // Wkładanie wszystkiego do ramki przy użyciu grid bag constraints
         wytyczne.fill = GridBagConstraints.BOTH;
@@ -296,6 +284,22 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     @Override
     public void wyswietlInterfejs() {
         this.setVisible(true);
+    }
+    
+    /**
+     * Zwraca panel przewijania dodany do argumentu, który dodatkowo otacza ramką
+     * @param komponent komponent do otoczenia ramka i przewijaniem
+     * @return panel przewijania zawierający otoczony obniżoną ramką komponent
+     */
+    private JScrollPane zwrocOtoczonePrzewijaniem(JComponent komponent){
+        komponent.setBorder(BorderFactory.createLoweredBevelBorder());
+        
+        JScrollPane przewijanie = new JScrollPane(komponent);
+        przewijanie.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        przewijanie.setBorder(BorderFactory.createTitledBorder(
+                                BorderFactory.createLineBorder(Color.black),"Output"));
+        return przewijanie;
+        
     }
     
     private String otocz(String wejscie, int indeks, String lewo, String prawo){
