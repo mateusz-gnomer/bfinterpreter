@@ -188,16 +188,16 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
         // TODO ustawienie zamiast JTextArea editor pane'a i pogrubianie aktualnej komendy
 
         this.kodHtml.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.przewijanieKoduHtml = zwrocOtoczonePrzewijaniem(this.kodHtml);
+        this.przewijanieKoduHtml = zwrocOtoczonePrzewijaniem(this.kodHtml, "Code");
 
        
         this.wejscie = new JTextArea();
         this.wejscie.setBorder(BorderFactory.createLoweredBevelBorder());
-        this.przewijanieWejscia = zwrocOtoczonePrzewijaniem(this.wejscie);
+        this.przewijanieWejscia = zwrocOtoczonePrzewijaniem(this.wejscie, "Input");
     
         this.wyjscie = new JTextArea();
         this.wyjscie.setEnabled(false);
-        this.przewijanieWyjscia = zwrocOtoczonePrzewijaniem(this.wyjscie);
+        this.przewijanieWyjscia = zwrocOtoczonePrzewijaniem(this.wyjscie, "Output");
 
         
         panelWeWy.add(this.przewijanieWejscia, BorderLayout.NORTH);
@@ -289,15 +289,16 @@ public class InterfejsGraficzny extends JFrame implements InterfejsUzytkownika{
     /**
      * Zwraca panel przewijania dodany do argumentu, który dodatkowo otacza ramką
      * @param komponent komponent do otoczenia ramka i przewijaniem
+     * @param podpis dodaje etykietę woków ramki
      * @return panel przewijania zawierający otoczony obniżoną ramką komponent
      */
-    private JScrollPane zwrocOtoczonePrzewijaniem(JComponent komponent){
+    private JScrollPane zwrocOtoczonePrzewijaniem(JComponent komponent, String podpis){
         komponent.setBorder(BorderFactory.createLoweredBevelBorder());
         
         JScrollPane przewijanie = new JScrollPane(komponent);
         przewijanie.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         przewijanie.setBorder(BorderFactory.createTitledBorder(
-                                BorderFactory.createLineBorder(Color.black),"Output"));
+                                BorderFactory.createLineBorder(Color.black),podpis));
         return przewijanie;
         
     }
